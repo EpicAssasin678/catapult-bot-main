@@ -34,11 +34,20 @@ def initPinConfig (IN1, IN2, IN3, IN4, ENA, ENB):
     return [IN1, IN2, IN3, IN4, ENA, ENB]
     
 
+
+
 def forward():
     pass
 
 def reverse():
     pass
+
+def forward(type):
+    return True
+    
+
+def forward(degrees):
+    return 1
 
 def stop():
     pass
