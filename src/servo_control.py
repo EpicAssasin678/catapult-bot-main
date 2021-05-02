@@ -12,3 +12,5 @@ def detectTension():
 
 #clean up regardless of what setup was done
 GPIO.cleanup()
+p = GPIO.PWMOutputDevice()
+

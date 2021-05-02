@@ -1,7 +1,9 @@
 import RPi.GPIO as GPIO          
 from time import sleep
+import argparse as ARGPARSE
 
-#creates movement for 4 wheels driven by l298n DC Motor Driver 
+
+#Creates movement for 4 wheels driven by l298n DC Motor Driver.
 #Author: Zachery Uporsky
 #Date: 4/28/21
 
@@ -29,7 +31,7 @@ def initPinConfig (IN1, IN2, IN3, IN4, ENA, ENB):
     GPIO.output(IN2,GPIO.LOW)
     p1=GPIO.PWM(ENA,1000)
     p1.start(25)
-
+    
     #second side 
     GPIO.setup(IN3, GPIO.OUT)
     GPIO.setup(IN4,GPIO.OUT)
@@ -45,31 +47,87 @@ def initPinConfig (IN1, IN2, IN3, IN4, ENA, ENB):
     
     #function stubs
 def calibrateMotors ():
-    if not(pingConfigA == [] and pingConfigB == []):
+    if not(pinConfigA == [] and pinConfigB == []):
         GPIO.output(pinConfigA[0], GPIO.HIGH)
-        #then record rps with sensor
+        #Then record RPS with optic optocoupler and configure speed calculations. 
+
+    else:
+        print("Motor pin configuration not set, please use pinConfig = initPinConfig to do so.")
+        return False 
         
     pass
 
 
 def forward():
+    GPIO.output(pinConfigA[0], GPIO.HIGH)
+    GPIO.output(pinConfigA[1], GPIO.LOW)
+    GPIO.output(pinConfigA[2], GPIO.HIGH)
+    GPIO.output(pinConfigA[3], GPIO.LOW)
+
+    GPIO.output(pinConfigB[0], GPIO.HIGH)
+    GPIO.output(pinConfigB[1], GPIO.LOW)
+    GPIO.output(pinConfigB[2], GPIO.HIGH)
+    GPIO.output(pinConfigB[3], GPIO.LOW)
     pass
 
 
 
 def reverse():
+
+    GPIO.output(pinConfigA[0], GPIO.LOW)
+    GPIO.output(pinConfigA[1], GPIO.HIGH)
+    GPIO.output(pinConfigA[2], GPIO.LOW)
+    GPIO.output(pinConfigA[3], GPIO.HIGH)
+    GPIO.output(pinConfigB[0], GPIO.LOW)
+    GPIO.output(pinConfigB[1], GPIO.HIGH)
+    GPIO.output(pinConfigB[2], GPIO.LOW)
+    GPIO.output(pinConfigB[3], GPIO.HIGH)
     pass
 
-#overload deg type, "RIGHT", "LEFT"
-def forward(type):
+#Overload deg type, "RIGHT", "LEFT"
+def turn(type):
+    if type.capitalize == "RIGHT":
+        #Makes side A go backwards.
+        GPIO.output(pinConfigA[0], GPIO.LOW)
+        GPIO.output(pinConfigA[1], GPIO.HIGH)
+        GPIO.output(pinConfigA[2], GPIO.LOW)
+        GPIO.output(pinConfigA[3], GPIO.HIGH)
+        #Makes side B go forwards. 
+        GPIO.output(pinConfigB[0], GPIO.HIGH)
+        GPIO.output(pinConfigB[1], GPIO.LOW)
+        GPIO.output(pinConfigB[2], GPIO.HIGH)
+        GPIO.output(pinConfigB[3], GPIO.LOW)
+    elif type.capitalize() == "LEFT":
+        #Makes side A go forwards.
+        GPIO.output(pinConfigA[0], GPIO.HIGH)
+        GPIO.output(pinConfigA[1], GPIO.LOW)
+        GPIO.output(pinConfigA[2], GPIO.HIGH)
+        GPIO.output(pinConfigA[3], GPIO.LOW)
+        #Makes side B go backwards.
+        GPIO.output(pinConfigB[0], GPIO.LOW)
+        GPIO.output(pinConfigB[1], GPIO.HIGH)        
+        GPIO.output(pinConfigB[2], GPIO.LOW)
+        GPIO.output(pinConfigB[3], GPIO.HIGH) 
     return True
     
-
-def forward(degrees):
-    return 1
+#Needed to implement.
+def turn(degrees):
+    pass
 
 def stop():
+    GPIO.output(pinConfigA[0], GPIO.LOW)
+    GPIO.output(pinConfigA[1], GPIO.LOW)
+    GPIO.output(pinConfigA[2], GPIO.LOW)
+    GPIO.output(pinConfigA[3], GPIO.LOW)
+    
+    GPIO.output(pinConfigB[0], GPIO.LOW)
+    GPIO.output(pinConfigB[1], GPIO.LOW)
+    GPIO.output(pinConfigB[2], GPIO.LOW)
+    GPIO.output(pinConfigB[3], GPIO.LOW)
     pass
+
+def exit():
+    GPIO.cleanup()
 
 
 
