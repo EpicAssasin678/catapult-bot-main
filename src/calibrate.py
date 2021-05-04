@@ -2,7 +2,9 @@
 #imports 
 #import RP.GPIO as GPIO
 
-def calibrate (posX, posY, posZ):
+def calibrate (AccX, AccY, AccZ, GyrX, GyrY, GyrZ):
+
+        
     return 1
 
 
